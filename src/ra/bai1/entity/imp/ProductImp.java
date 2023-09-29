@@ -1,15 +1,20 @@
-package ra.imp;
+package ra.bai1.entity.imp;
 
-import ra.entity.Product;
+import ra.bai1.entity.Product;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class ProductImp {
     public static void main(String[] args) {
         Scanner scanner=new Scanner(System.in);
         Product[] products=new Product[100];
-        int currentIndex=0;
+        products[0] = new Product("1","P1",8,10,6,"P1",true);
+        products[1] = new Product("2","P2",4,12,40,"P2",true);
+        products[2] = new Product("3","P3",3,6,15,"P3",true);
+        products[3] = new Product("4","P4",2,3,0,"P4",false);
+        products[4] = new Product("5","P5",4,8,20,"P5",true);
+
+        int currentIndex=5;
         int choice;
         do {
             System.out.println("*********MENU********");
@@ -22,7 +27,9 @@ public class ProductImp {
             System.out.println("7. Nhập sản phẩm");
             System.out.println("8. Bán sản phẩm");
             System.out.println("9. Cập nhật trạng thái sản phẩm");
-            System.out.println("10. Thoát");
+            System.out.println("10. Nhập mã sản phẩm cần xoá");
+            System.out.println("11. Nhập mã sản phẩm cần sửa");
+            System.out.println("0. Thoát");
             System.out.println("************************");
             System.out.println("Nhập lựa chọn của bạn: ");
             choice= Integer.parseInt(scanner.nextLine());
@@ -73,7 +80,6 @@ public class ProductImp {
                         }
                     }
                     System.out.println("Đã sắp xếp xong");
-
                     break;
                 case 5:
                     System.out.println("5. Thống kê sản phẩm theo giá");
@@ -160,6 +166,7 @@ public class ProductImp {
                     if (!productFoundForSale) {
                         System.err.println("Không tìm thấy sản phẩm có tên: " + productNameToSell);
                     }
+                    break;
                 case 9:
                     System.out.println("Nhập mã sản phẩm cần cập nhật trạng thái:");
                     String statusEditId = scanner.nextLine();
@@ -171,6 +178,48 @@ public class ProductImp {
                     System.out.println("Đã cập nhật xong");
                     break;
                 case 10:
+                    System.out.println("Nhập mã sản phẩm cần xoá: ");
+                    String deleteId=scanner.nextLine();
+                    for(int i=0;i<currentIndex;i++){
+                        if(products[i].getProductid().equals(deleteId)){
+                            for(int j=i;j<currentIndex;j++){
+                                products[j]=products[j+1];
+                            }
+                            currentIndex--;
+                        }
+                    } System.out.println("Đã Xoá xong");
+                    break;
+                case 11:
+                    System.out.println("11. Nhập mã sản phẩm cần sửa: ");
+                    String updateId=scanner.nextLine();
+                    //updateIndex: để lưu trữ chỉ số (index) cần chỉnh sửa trong mảng products.
+                    int updateIndex=-1;//neu k tim thay phan tu
+                    for(int i=0;i<currentIndex;i++){
+                        if(products[i].getProductid().equals(updateId)){
+                            updateIndex=i;
+                            break;
+                        }
+                    }
+                    if(updateIndex>=0){ //chi so phan tu can cap nhat
+                        System.out.println("Ten SP");
+                        products[updateIndex].setProductName(scanner.nextLine());
+                        System.out.println("Giá nhập");
+                        products[updateIndex].setImportPrice(Integer.parseInt(scanner.nextLine()));
+                        System.out.println("Giá xuất");
+                        products[updateIndex].setExportPrice(Float.parseFloat(scanner.nextLine()));
+                        System.out.println("Số lượng sản phẩm");
+                        products[updateIndex].setQuantity(Integer.parseInt(scanner.nextLine()));
+                        System.out.println("Mô tả sản phẩm");
+                        products[updateIndex].setDescriptions(scanner.nextLine());
+                        System.out.println("Trạng thái sản phẩm");
+                        products[updateIndex].setStatus(Boolean.parseBoolean(scanner.nextLine()));
+                    }else {
+                        System.err.println("Ma SV Khong ton tai");
+                    }
+                    System.out.println("Đã cập nhật thầnh công");
+                   break;
+
+                case 0:
                     System.exit(0);
                     break;
                 default:

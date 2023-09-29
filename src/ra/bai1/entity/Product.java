@@ -1,4 +1,4 @@
-package ra.entity;
+package ra.bai1.entity;
 
 import java.util.Scanner;
 
@@ -12,9 +12,22 @@ public class Product {
     private String descriptions;//Mô tả sản phẩm
     private boolean status; //Trạng thái sản phẩm
 
+    //đa hình: thể hiện qua overLoadding và overriding
     public Product() {
     }
 
+    public Product(String productid, String productName, float importPrice, float exportPrice, int quantity, String descriptions, boolean status) {
+        this.productid = productid;
+        this.productName = productName;
+        this.importPrice = importPrice;
+        this.exportPrice = exportPrice;
+        this.quantity = quantity;
+        this.descriptions = descriptions;
+        this.status = status;
+    }
+
+    //overLoadding: contrucstor cùng tên nhưng khác nhau về số lượng tham số và kiểu tham số
+    //overriding: giống nhau về kiểu tham số
     public Product(String productid, String productName, float importPrice, float exportPrice, float profit, int quantity, String descriptions, boolean status) {
         this.productid = productid;
         this.productName = productName;
@@ -113,6 +126,21 @@ public class Product {
         System.out.println("*******THÔNG TIN SINH VIÊN*********");
         System.out.printf("Mã sản phẩm: %s\nTên sản phẩm: %s\nGiá nhập: %f\n" ,this.productid, this.productName, this.importPrice);
         System.out.printf("Giá xuất: %f\nSố lượng sản phẩm: %d\nMô tả sản phẩm: %s\n" ,this.exportPrice, this.quantity,this.descriptions);
-        System.out.println("Trạng thái sản phẩm: " + (this.isStatus() ? "True" : "Flase"));
+        System.out.println("Trạng thái sản phẩm: " + (this.isStatus() ? "Đang bán" : "Không bán"));
+    }
+    //thuộc tính ghi đè: cùng
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productid='" + productid + '\'' +
+                ", productName='" + productName + '\'' +
+                ", importPrice=" + importPrice +
+                ", exportPrice=" + exportPrice +
+                ", profit=" + profit +
+                ", quantity=" + quantity +
+                ", descriptions='" + descriptions + '\'' +
+                ", status=" + status +
+                '}';
     }
 }
