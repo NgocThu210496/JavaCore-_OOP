@@ -3,12 +3,15 @@ package ra.bai2.entity;
 import java.util.Scanner;
 
 public class Categories {
+   // private static int nextCatalogId = 1; // Biến để theo dõi mã danh mục tiếp theo
     private int catalogId;
     private String catalogName;
     private String descriptions; //mô tả danh mục
     private boolean catalogStatus; //true – hoạt động, false – không hoạt động
 
-    public Categories() {
+
+    public Categories() { // Hàm tạo mặc định
+        //this.catalogId = nextCatalogId++;
     }
 
     public Categories(int catalogId, String catalogName, String descriptions, boolean catalogStatus) {
@@ -58,14 +61,15 @@ public class Categories {
             //lay gia tri id cua phan tu cuoi cung +1
             this.catalogId = arrCategories[arrCategories.length - 1].getCatalogId() + 1;
         }
-        System.out.println("Nhập Tên danh mục");
 
+        System.out.println("Nhập Tên danh mục");
         do {
-               //có độ dài tối đa 50 ký tự,không trùng lặp.
+
+            //có độ dài tối đa 50 ký tự,không trùng lặp.
             this.catalogName = scanner.nextLine();
             if (!this.catalogName.isEmpty() && this.catalogName.length() < 50) {
                 //chuyển đổi trạng thái khi thoã mãn đk
-                boolean check = false;
+                boolean isDuplicate = false;
                 //khong trung lap
                 for (int i = 0; i < curentCategories; i++) {
                     if (this.catalogName.equals(arrCategories[i].getCatalogName())) {
@@ -73,17 +77,16 @@ public class Categories {
 
                     } else {
                         //khi vao day thi da thoa man dieu kien do dai<50 va k trung lap
-                        check = true;
+                        isDuplicate = true;
                     }
                 }
-                if (check) {
+                if (isDuplicate) {
                     break;
                 }
             } else {
                 System.err.println("Nhập vào độ dài từ 1=>50 ký tự, mời nhập lại!");
             }
-        } while (true);
-
+        } while (false);
         System.out.println("Mô tả danh mục");
         this.descriptions = scanner.nextLine();
 
@@ -104,8 +107,9 @@ public class Categories {
         }
         while (true);
     }
-    public void displayData() {
-        System.out.printf("CatalogId: %d\n Ten danh muc: %s\nMô tả danh mục: %s\nStatus: %b\n", this.catalogId, this.catalogName, this.descriptions, this.catalogStatus);
+
+    public void displayDataCatalog() {
+        System.out.printf("CatalogId: %d\nTen danh muc: %s\nMô tả danh mục: %s\nStatus: %s\n", this.catalogId, this.catalogName, this.descriptions, this.catalogStatus ? "Hoạt động" : "Không hoạt động");
     }
 
 }

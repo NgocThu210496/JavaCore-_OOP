@@ -158,8 +158,9 @@ public class Product {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
         String birthDateStr = scanner.nextLine();
         try {
-            Date created = sdf.parse(birthDateStr);
-            System.out.println("Ngày nhập sản phẩm la: " + created);
+            //or Data created
+            this.created = sdf.parse(birthDateStr);
+            System.out.println("Ngày nhập sản phẩm la: " + this.created);
         } catch (Exception ex) {
             System.err.println("Ngày nhập sản phẩm không đúng định dạng, vui lòng  nhập lại!");
         }
