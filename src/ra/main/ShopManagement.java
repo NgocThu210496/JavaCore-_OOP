@@ -1,5 +1,12 @@
-package ra.bai2.entity;
+package ra.main;
 
+import javafx.scene.input.DataFormat;
+import ra.entity.Categories;
+import ra.entity.Product;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class ShopManagement {
@@ -135,6 +142,8 @@ public class ShopManagement {
                     arrCategories[j] = arrCategories[j + 1];
                 }
                 curentCategories--;
+            } else {
+                System.err.println("Mã danh mục không tồn tại");
             }
         }
         System.out.println("Đã Xoá xong");
@@ -147,6 +156,9 @@ public class ShopManagement {
             if (arrCategories[i].getCatalogId() == statusUpdateCategoriesId) {
                 arrCategories[i].setCatalogStatus(!arrCategories[i].isCatalogStatus());
             }
+//            else {
+//                System.err.println("Mã danh mục không tồn tại");
+//            }
         }
         System.out.println("Đã cập nhật xong");
     }
@@ -169,13 +181,19 @@ public class ShopManagement {
             switch (choiceMenuProduct) {
                 case 1:
                     System.out.println("1. Nhập thông tin n sản phẩm");
-
+                    ShopManagement.inputProduct(scanner);
                     break;
                 case 2:
+                    System.out.println("2. Hiển thị thông tin các sản phẩm");
+                    ShopManagement.displayProduct();
                     break;
                 case 3:
+                    System.out.println("3. Sắp xếp các sản phẩm theo giá");
+                    ShopManagement.sortProductPice();
                     break;
                 case 4:
+                    System.out.println("4. Cập nhật thông tin sản phẩm theo mã sản phẩm");
+
                     break;
                 case 5:
                     break;
@@ -191,7 +209,83 @@ public class ShopManagement {
             }
         } while (exitMenuProduct);
     }
-    public static void inputProduct(){
 
+    public static void inputProduct(Scanner scanner) {
+        System.out.println("Nhập vào số sản phẩm: ");
+        int number = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < number; i++) {
+            //khởi tạo phần tử thức indexProduct là một đối tượng danh mục cần nhập liệu
+            arrProducts[indexProduct] = new Product();
+            arrProducts[indexProduct].inputDataProduct(scanner, arrProducts, indexProduct, arrCategories, curentCategories);
+            indexProduct++;
+        }
+    }
+
+    public static void displayProduct() {
+        for (int i = 0; i < indexProduct; i++) {
+            arrProducts[i].dispalyDataProduct();
+        }
+    }
+
+    public static void sortProductPice() {
+        Float[] priceSort = new Float[indexProduct];
+        for (int i = 0; i < indexProduct; i++) {
+            priceSort[i] = arrProducts[i].getPrice();
+        }
+        Product temp = null;
+        for (int i = 0; i < indexProduct - 1; i++) {
+            for (int j = i + 1; j < indexProduct; j++) {
+                if (priceSort[i] < priceSort[j]) {
+                    temp = arrProducts[i];
+                    arrProducts[i] = arrProducts[j];
+                    arrProducts[j] = temp;
+                }
+            }
+        }
+        System.out.println("Đã sắp xếp xong");
+    }
+
+    public static void updateProduct() throws ParseException {
+        int newId = Integer.parseInt(scanner.nextLine());
+        //neu k tim thay phan tu
+        int updateProductIndex = -1;
+        for (int i = 0; i < indexProduct; i++) {
+            if (arrCategories[i].getCatalogId() == newId) {
+                updateProductIndex = i; // Tìm thấy danh mục cần cập nhật, thoát khỏi vòng lặp
+                break;
+            }
+        }
+        if (updateProductIndex > 0) {
+            System.out.println("Cập nhật tên sản phẩm: ");
+            arrProducts[indexProduct].setProductName(scanner.nextLine());
+            System.out.println("cập nhật giá sản phẩm: ");
+            arrProducts[indexProduct].setPrice(Float.parseFloat(scanner.nextLine()));
+            System.out.println("Cập nhật mô tả sản phẩm: ");
+            arrProducts[indexProduct].setDescription(scanner.nextLine());
+            System.out.println("Cập nhật ngày sản phẩm: ");
+            arrProducts[indexProduct].setCreated(SimpleDateFormat.getDateTimeInstance().parse(scanner.nextLine()));
+//            System.out.println("Cập nhật danh mục: ");
+//            arrProducts[indexProduct].setCategories(Integer.parseInt(scanner.nextLine()));
+            System.out.println("Cập nhật trạng thái sản phẩm: ");
+            updaStatusProduct();
+
+        }
+    }
+    public static void updaStatusProduct(){
+        int productIndexToUpdate = Integer.parseInt(scanner.nextLine());
+        // Kiểm tra xem chỉ số có hợp lệ không
+        if (productIndexToUpdate >= 0 && productIndexToUpdate < indexProduct) {
+            System.out.println("Cập nhật trạng thái sản phẩm (0: Đang bán, 1: Hết hàng, 2: Không bán): ");
+
+            int newStatus = Integer.parseInt(scanner.nextLine());
+            if (newStatus >= 0 && newStatus <= 2) {
+                arrProducts[productIndexToUpdate].setProductStatus(newStatus);
+                System.out.println("Đã cập nhật trạng thái sản phẩm thành công.");
+            } else {
+                System.err.println("Trạng thái không hợp lệ.");
+            }
+        } else {
+            System.err.println("Chỉ số sản phẩm không hợp lệ.");
+        }
     }
 }

@@ -1,4 +1,4 @@
-package ra.bai2.entity;
+package ra.entity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -83,7 +83,7 @@ public class Product {
         return productStatus;
     }
 
-    public void inputData(Scanner scanner, Product[] arrProduct, int indexProduct, Categories[] arrCategories, int curentCategories) {
+    public void inputDataProduct(Scanner scanner, Product[] arrProduct, int indexProduct, Categories[] arrCategories, int curentCategories) {
         System.out.println("Nhập thông tin của sản phẩm");
         /*gồm 4 ký tự bắt đầu là một trong 3 ký tự (C: các đồ uống là café,
          S: các đồ uống là sinh tố, A: các đồ ăn nhanh), không được trùng lặp*/
@@ -112,9 +112,9 @@ public class Product {
                 }
 
             } else
-                System.out.println("Độ dài phải đủ 4 ký tự, mời nhập lại!");
+                System.err.println("Độ dài phải đủ 4 ký tự, mời nhập lại!");
 
-        } while (true);
+        } while (false);
 
 
         do {
@@ -137,7 +137,7 @@ public class Product {
             } else {
                 System.err.println("Nhập  tên sản phẩm đồ uống, có từ 10-50 ký tự,mời nhập lại!");
             }
-        } while (true);
+        } while (false);
 
 
         do {
@@ -179,13 +179,29 @@ public class Product {
 
         System.out.println("Nhập vào trạng thái");
         do {
-            String status = scanner.nextLine();
+            /*String status = scanner.nextLine();
             if (status.equals("0: Đang bán") || status.equals("1: Hết hàng") || status.equals("2: Không bán")) {
                 this.productStatus = Integer.parseInt(status);
                 break;
             } else {
                 System.err.println("trạng thái sản phẩm, chỉ nhận 1 trong các trạng thái sau (0: Đang bán – 1: Hết hàng – 2: Không bán), vui lòng  nhập lại!");
+            }*/
+
+            int status = Integer.parseInt(scanner.nextLine());
+            if (status==0) {
+                this.productStatus = 0;
+                break;
             }
+            if (status==1) {
+                this.productStatus = 1;
+                break;
+            }
+            if (status==2) {
+                this.productStatus = 2;
+                break;
+            }
+
+            System.out.println("Không đúng định dạng,mời nhập Lại");
         } while (true);
     }
 
@@ -207,9 +223,9 @@ public class Product {
         System.out.println("Trạng thái sản phẩm: " + statusText);
     }
 
-    public void dispalyData() {
-        System.out.printf("Mã đồ uống: %d\nTên đồ uống: %s\nGiá sản phẩm: %f\n", this.productid, this.productName, this.price);
-        System.out.printf("Mô tả sản phẩm: %s\nMã danh mục mà sản phẩm: %s\n", this.description, this.categories.getCatalogName());
+    public void dispalyDataProduct() {
+        System.out.printf("Mã đồ uống: %s\nTên đồ uống: %s\nGiá sản phẩm: %f\n", this.productid, this.productName, this.price);
+        System.out.printf("Mô tả sản phẩm: %s\nNgày nhập sản phẩm: %tF\nMã danh mục mà sản phẩm: %d\n", this.description,this.created, this.categories.getCatalogId());
         displayProductStatus(); // Gọi phương thức displayProductStatus() ở đây
     }
 }
