@@ -87,57 +87,64 @@ public class Product {
         System.out.println("Nhập thông tin của sản phẩm");
         /*gồm 4 ký tự bắt đầu là một trong 3 ký tự (C: các đồ uống là café,
          S: các đồ uống là sinh tố, A: các đồ ăn nhanh), không được trùng lặp*/
-
+        System.out.println("Nhập vào mã đồ uống: ");
         do {
-            System.out.println("Nhập vào mã đồ uống: ");
+
             this.productid = scanner.nextLine();
+            boolean check = false;
             if (productid.length() == 4) {
                 if (productid.startsWith("C") || productid.startsWith("S") || productid.startsWith("A")) {
-                    boolean check = false;
+
                     //không được trùng lặp
-                    for (int i = 0; i < arrProduct.length; i++) {
+                    for (int i = 0; i < indexProduct; i++) {
                         if (productName.equals(arrProduct[i].getProductName())) {
-                            System.err.println("Đã tồn tại mã sản phẩm, vui lòng nhập lại!");
-                            break;
-                        } else {
-                            //nếu thoả mãn thì vào đây
                             check = true;
+                            break;
                         }
                     }
                     if (check) {
+                        System.err.println("Đã tồn tại mã sản phẩm, vui lòng nhập lại!");
+
+                    }else {
+                        //nếu thoả mãn thì vào đây
+                        //check = true;
                         break;
                     }
                 } else {
-                    System.out.println("C: các đồ uống là café,S: các đồ uống là sinh tố, A: các đồ ăn nhanh, vui lòng nhập lại!");
+                    System.err.println("C: các đồ uống là café,S: các đồ uống là sinh tố, A: các đồ ăn nhanh, vui lòng nhập lại!");
                 }
 
             } else
                 System.err.println("Độ dài phải đủ 4 ký tự, mời nhập lại!");
 
-        } while (false);
+        } while (true);
 
 
+        System.out.println("Nhập tên đồ uống"); //tên sản phẩm đồ uống, có từ 10-50 ký tự,
         do {
-            System.out.println("Nhập tên đồ uống"); //tên sản phẩm đồ uống, có từ 10-50 ký tự,
             this.productName = scanner.nextLine();
+            boolean checkDink = false;
             if (!(this.productName.length() > 10) || this.productName.length() < 50) {
-                boolean checkDink = false;
                 //không được trùng lặp
                 for (int i = 0; i < indexProduct; i++) {
-                    if (this.productName.equals(arrProduct[i].getProductName())) {
-                        System.err.println("Tên đồ uống đã bị trùng lặp, vui lòng nhập lại");
-                    } else {
-                        //thoã mãn 2 đk trên thì mới vào đây nhá!!!!!
+                    //this.productName.equals(arrProduct[i].getProductName())
+                    if (arrProduct[i].getProductName().equals(this.productName)) {
                         checkDink = true;
+                        break;
+
                     }
                 }
                 if (checkDink) {
+                    System.err.println("Tên đồ uống đã bị trùng lặp, vui lòng nhập lại");
+                }
+                else {
                     break;
                 }
-            } else {
+            }
+            else {
                 System.err.println("Nhập  tên sản phẩm đồ uống, có từ 10-50 ký tự,mời nhập lại!");
             }
-        } while (false);
+        } while (true);
 
 
         do {
@@ -179,24 +186,17 @@ public class Product {
 
         System.out.println("Nhập vào trạng thái");
         do {
-            /*String status = scanner.nextLine();
-            if (status.equals("0: Đang bán") || status.equals("1: Hết hàng") || status.equals("2: Không bán")) {
-                this.productStatus = Integer.parseInt(status);
-                break;
-            } else {
-                System.err.println("trạng thái sản phẩm, chỉ nhận 1 trong các trạng thái sau (0: Đang bán – 1: Hết hàng – 2: Không bán), vui lòng  nhập lại!");
-            }*/
 
             int status = Integer.parseInt(scanner.nextLine());
-            if (status==0) {
+            if (status == 0) {
                 this.productStatus = 0;
                 break;
             }
-            if (status==1) {
+            if (status == 1) {
                 this.productStatus = 1;
                 break;
             }
-            if (status==2) {
+            if (status == 2) {
                 this.productStatus = 2;
                 break;
             }
@@ -225,7 +225,7 @@ public class Product {
 
     public void dispalyDataProduct() {
         System.out.printf("Mã đồ uống: %s\nTên đồ uống: %s\nGiá sản phẩm: %f\n", this.productid, this.productName, this.price);
-        System.out.printf("Mô tả sản phẩm: %s\nNgày nhập sản phẩm: %tF\nMã danh mục mà sản phẩm: %d\n", this.description,this.created, this.categories.getCatalogId());
+        System.out.printf("Mô tả sản phẩm: %s\nNgày nhập sản phẩm: %tF\nMã danh mục mà sản phẩm: %d\n", this.description, this.created, this.categories.getCatalogId());
         displayProductStatus(); // Gọi phương thức displayProductStatus() ở đây
     }
 }

@@ -1,12 +1,12 @@
 package ra.main;
 
-import javafx.scene.input.DataFormat;
+
 import ra.entity.Categories;
 import ra.entity.Product;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.Scanner;
 
 public class ShopManagement {
@@ -15,8 +15,9 @@ public class ShopManagement {
     private static Categories[] arrCategories = new Categories[100];
     private static int indexProduct = 0; //khởi tạo chir số phần tử nhập data
     private static int curentCategories = 0;
+    public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/mm/yyyy");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         //khởi tạo mảng và gán giá trị mặc định cho từng phần tử
         arrCategories = new Categories[100];
         for (int i = 0; i < arrCategories.length; i++) {
@@ -156,14 +157,11 @@ public class ShopManagement {
             if (arrCategories[i].getCatalogId() == statusUpdateCategoriesId) {
                 arrCategories[i].setCatalogStatus(!arrCategories[i].isCatalogStatus());
             }
-//            else {
-//                System.err.println("Mã danh mục không tồn tại");
-//            }
         }
         System.out.println("Đã cập nhật xong");
     }
 
-    public static void menuProducts(Scanner scanner) {
+    public static void menuProducts(Scanner scanner) throws ParseException {
         boolean exitMenuProduct = true;
         do {
             System.out.println("*************PRODUCT MANAGEMENT*************");
@@ -189,17 +187,24 @@ public class ShopManagement {
                     break;
                 case 3:
                     System.out.println("3. Sắp xếp các sản phẩm theo giá");
-                    ShopManagement.sortProductPice();
+                    ShopManagement.sortProductPrice();
                     break;
                 case 4:
                     System.out.println("4. Cập nhật thông tin sản phẩm theo mã sản phẩm");
+                    ShopManagement.updateProduct();
 
                     break;
                 case 5:
+                    System.out.println("5. Xóa sản phẩm theo mã sản phẩm");
+                    ShopManagement.deleteProduct();
                     break;
                 case 6:
+                    System.out.println("6. Tìm kiếm các sản phẩm theo tên sản phẩm");
+                    ShopManagement.searchProduct();
                     break;
                 case 7:
+                    System.out.println("7. Tìm kiếm sản phẩm trong khoảng giá a – b (a,b nhập từ bàn phím)");
+                    ShopManagement.productApprox();
                     break;
                 case 8:
                     exitMenuProduct = false;
@@ -227,7 +232,7 @@ public class ShopManagement {
         }
     }
 
-    public static void sortProductPice() {
+    public static void sortProductPrice() {
         Float[] priceSort = new Float[indexProduct];
         for (int i = 0; i < indexProduct; i++) {
             priceSort[i] = arrProducts[i].getPrice();
@@ -244,48 +249,89 @@ public class ShopManagement {
         }
         System.out.println("Đã sắp xếp xong");
     }
-
     public static void updateProduct() throws ParseException {
-        int newId = Integer.parseInt(scanner.nextLine());
-        //neu k tim thay phan tu
+        System.out.println("Nhập mã sản phẩm cần cập nhật: ");
+        String productIdToUpdate = scanner.nextLine();
+
+        // Tìm sản phẩm cần cập nhật dựa vào mã sản phẩm
         int updateProductIndex = -1;
         for (int i = 0; i < indexProduct; i++) {
-            if (arrCategories[i].getCatalogId() == newId) {
-                updateProductIndex = i; // Tìm thấy danh mục cần cập nhật, thoát khỏi vòng lặp
-                break;
+            if (arrProducts[i].getProductid().equals(productIdToUpdate)) {
+                updateProductIndex = i;
+                break; // Thoát khỏi vòng lặp khi tìm thấy sản phẩm cần cập nhật
             }
         }
-        if (updateProductIndex > 0) {
+        if (updateProductIndex > -1) {
             System.out.println("Cập nhật tên sản phẩm: ");
-            arrProducts[indexProduct].setProductName(scanner.nextLine());
+            arrProducts[updateProductIndex].setProductName(scanner.nextLine());
             System.out.println("cập nhật giá sản phẩm: ");
-            arrProducts[indexProduct].setPrice(Float.parseFloat(scanner.nextLine()));
+            arrProducts[updateProductIndex].setPrice(Float.parseFloat(scanner.nextLine()));
             System.out.println("Cập nhật mô tả sản phẩm: ");
-            arrProducts[indexProduct].setDescription(scanner.nextLine());
+            arrProducts[updateProductIndex].setDescription(scanner.nextLine());
             System.out.println("Cập nhật ngày sản phẩm: ");
-            arrProducts[indexProduct].setCreated(SimpleDateFormat.getDateTimeInstance().parse(scanner.nextLine()));
-//            System.out.println("Cập nhật danh mục: ");
-//            arrProducts[indexProduct].setCategories(Integer.parseInt(scanner.nextLine()));
-            System.out.println("Cập nhật trạng thái sản phẩm: ");
-            updaStatusProduct();
 
+           arrProducts[updateProductIndex].setCreated(DATE_FORMAT.parse(scanner.nextLine()));
+            updaStatusProduct(updateProductIndex);
+            System.out.println("Đã cập nhật thông tin sản phẩm thành công.");
+        } else {
+            System.err.println("Không tìm thấy sản phẩm với mã " + productIdToUpdate);
         }
     }
-    public static void updaStatusProduct(){
-        int productIndexToUpdate = Integer.parseInt(scanner.nextLine());
-        // Kiểm tra xem chỉ số có hợp lệ không
-        if (productIndexToUpdate >= 0 && productIndexToUpdate < indexProduct) {
-            System.out.println("Cập nhật trạng thái sản phẩm (0: Đang bán, 1: Hết hàng, 2: Không bán): ");
+    public static void updaStatusProduct(int productIndexToUpdate) {
+        System.out.println("Cập nhật trạng thái sản phẩm (0: Đang bán, 1: Hết hàng, 2: Không bán): ");
+        int newStatus = Integer.parseInt(scanner.nextLine());
 
-            int newStatus = Integer.parseInt(scanner.nextLine());
-            if (newStatus >= 0 && newStatus <= 2) {
-                arrProducts[productIndexToUpdate].setProductStatus(newStatus);
-                System.out.println("Đã cập nhật trạng thái sản phẩm thành công.");
-            } else {
-                System.err.println("Trạng thái không hợp lệ.");
-            }
+        if (newStatus >= 0 && newStatus <= 2) {
+            arrProducts[productIndexToUpdate].setProductStatus(newStatus);
+            System.out.println("Đã cập nhật trạng thái sản phẩm thành công.");
         } else {
-            System.err.println("Chỉ số sản phẩm không hợp lệ.");
+            System.err.println("Trạng thái không hợp lệ.");
         }
+    }
+
+    public static void searchProduct(){
+        System.out.print("Nhập tên sản phẩm cần tìm: ");
+        String searchName = scanner.nextLine();
+        boolean test = false; //tim san pham co hay khong
+        for (int i = 0; i < indexProduct; i++) {
+            String productName = arrProducts[i].getProductName().toLowerCase(); // Chuyển tên sản phẩm về chữ thường để tìm kiếm không phân biệt hoa thường
+            if (productName.contains(searchName.toLowerCase())) {
+                arrProducts[i].dispalyDataProduct(); // Hiển thị thông tin sản phẩm tìm thấy
+                test = true;
+            }
+        }
+        if (!test) {
+            System.err.println("Không tìm thấy sản phẩm nào có tên: " + searchName);
+        }
+    }
+    public static void deleteProduct() {
+        System.out.println("Nhập mã sản phẩm cần xoá: ");
+        String deleteId = scanner.nextLine();
+        for (int i = 0; i < indexProduct; i++) {
+            if (arrProducts[i].getProductid().equals(deleteId)) {
+                //để dịch chuyển các sản phẩm phía sau của sản phẩm bị xoá lên trước
+                for (int j = i; j < indexProduct; j++) {
+                    arrProducts[j] = arrProducts[j + 1];
+                }
+                indexProduct--;
+            }
+        }
+        System.out.println("Đã Xoá xong");
+    }
+    public static void productApprox(){
+        System.out.print("Nhập giá bắt đầu: ");
+        float fromPrice=Float.parseFloat(scanner.nextLine());
+        System.out.print("Nhập giá kết thúc: ");
+        float toPrice= Float.parseFloat(scanner.nextLine());
+        //countProductPriceRange: để theo dõi số lượng sản phẩm có giá bán trong khoảng từ fromPrice đến toPrice.
+        int countProductPriceRange=0;
+        for(int i=0; i<indexProduct;i++){
+            float productPrice = arrProducts[i].getPrice(); //để lấy giá bán của sản phẩm i trong mảng products
+            // productPrice:là biến tạm
+            if (productPrice >= fromPrice && productPrice <= toPrice) {
+                countProductPriceRange++;
+            }
+
+        }System.out.println("Số lượng sản phẩm có giá từ " + fromPrice + " đến " + toPrice + " là: " + countProductPriceRange);
     }
 }

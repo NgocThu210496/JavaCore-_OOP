@@ -54,7 +54,7 @@ public class Categories {
     }
 
     public void inputDataCatalog(Scanner scanner, Categories[] arrCategories, int curentCategories) {
-        System.out.println("Nhập thông tin danh mục:");
+        System.out.println("1.Nhập thông tin danh mục");
        /* if (arrCategories == null) {
             this.catalogId = 1;// ban dau phai la 1
         } else {
@@ -68,7 +68,7 @@ public class Categories {
             this.catalogId = arrCategories[curentCategories - 1].getCatalogId() + 1;
         }
 
-        System.out.println("Nhập Tên danh mục");
+        System.out.println("2.Nhập Tên danh mục");
         do {
             //có độ dài tối đa 50 ký tự,không trùng lặp.
             this.catalogName = scanner.nextLine();
@@ -93,10 +93,10 @@ public class Categories {
             }
         } while (true);
 
-        System.out.println("Mô tả danh mục");
+        System.out.println("3.Mô tả danh mục");
         this.descriptions = scanner.nextLine();
 
-        System.out.println("Nhập vào trạng thái danh mục: ");
+        System.out.println("4.Nhập vào trạng thái danh mục: ");
         do {
             String status = scanner.nextLine();
             if (status.equals("true")) {
@@ -108,7 +108,7 @@ public class Categories {
                 break;
             }
 
-            System.out.println("Không đúng định dạng,mời nhập Lại");
+            System.err.println("Không đúng định dạng,mời nhập Lại");
         }
         while (true);
     }
