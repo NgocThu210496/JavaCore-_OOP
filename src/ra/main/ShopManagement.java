@@ -13,16 +13,21 @@ public class ShopManagement {
     public static Scanner scanner = new Scanner(System.in);
     private static Product[] arrProducts = new Product[100]; //tạo mảng arrProducts để chứa alldata cuar Product
     private static Categories[] arrCategories = new Categories[100];
+    static {
+        arrCategories[0] = new Categories(1,"Fruit","nước hoa quả",true);
+        arrCategories[1] = new Categories(2,"Coffee","cà phê",true);
+        arrCategories[2] = new Categories(3,"Fast Foot","đồ ăn nhanh",true);
+    }
     private static int indexProduct = 0; //khởi tạo chir số phần tử nhập data
-    private static int curentCategories = 0;
+    private static int curentCategories = 3;
     public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/mm/yyyy");
 
     public static void main(String[] args) throws ParseException {
         //khởi tạo mảng và gán giá trị mặc định cho từng phần tử
-        arrCategories = new Categories[100];
-        for (int i = 0; i < arrCategories.length; i++) {
-            arrCategories[i] = new Categories();
-        }
+        //arrCategories = new Categories[100];
+//        for (int i = 0; i < arrCategories.length; i++) {
+//            arrCategories[i] = new Categories();
+//        }
         do {
             System.out.println("*************SHOP MENU*************");
             System.out.println("1. Quản lý danh mục");
@@ -192,7 +197,6 @@ public class ShopManagement {
                 case 4:
                     System.out.println("4. Cập nhật thông tin sản phẩm theo mã sản phẩm");
                     ShopManagement.updateProduct();
-
                     break;
                 case 5:
                     System.out.println("5. Xóa sản phẩm theo mã sản phẩm");
@@ -269,7 +273,6 @@ public class ShopManagement {
             System.out.println("Cập nhật mô tả sản phẩm: ");
             arrProducts[updateProductIndex].setDescription(scanner.nextLine());
             System.out.println("Cập nhật ngày sản phẩm: ");
-
            arrProducts[updateProductIndex].setCreated(DATE_FORMAT.parse(scanner.nextLine()));
             updaStatusProduct(updateProductIndex);
             System.out.println("Đã cập nhật thông tin sản phẩm thành công.");
@@ -280,7 +283,6 @@ public class ShopManagement {
     public static void updaStatusProduct(int productIndexToUpdate) {
         System.out.println("Cập nhật trạng thái sản phẩm (0: Đang bán, 1: Hết hàng, 2: Không bán): ");
         int newStatus = Integer.parseInt(scanner.nextLine());
-
         if (newStatus >= 0 && newStatus <= 2) {
             arrProducts[productIndexToUpdate].setProductStatus(newStatus);
             System.out.println("Đã cập nhật trạng thái sản phẩm thành công.");

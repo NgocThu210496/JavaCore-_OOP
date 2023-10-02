@@ -97,7 +97,7 @@ public class Product {
 
                     //không được trùng lặp
                     for (int i = 0; i < indexProduct; i++) {
-                        if (productName.equals(arrProduct[i].getProductName())) {
+                        if (productid.equals(arrProduct[i].getProductName())) {
                             check = true;
                             break;
                         }
@@ -160,6 +160,7 @@ public class Product {
         System.out.println("Mô tả sản phẩm");
         this.description = scanner.nextLine();
 
+        do{
         //ngày nhập sản phẩm có định dạng dd/mm/yyyy
         System.out.println("Ngày nhập sản phẩm: ");
         SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
@@ -168,9 +169,11 @@ public class Product {
             //or Data created
             this.created = sdf.parse(birthDateStr);
             System.out.println("Ngày nhập sản phẩm la: " + this.created);
+            break;
         } catch (Exception ex) {
             System.err.println("Ngày nhập sản phẩm không đúng định dạng, vui lòng  nhập lại!");
         }
+        }while (true);
 
         System.out.println("Mã danh mục mà sản phẩm thuộc về");
         System.out.println("Chọn danh mục của sản phẩm ");
@@ -179,12 +182,19 @@ public class Product {
             System.out.println(i + 1 + "." + arrCategories[i].getCatalogName());
         }
         System.out.println("Lựa chọn của bạn");
-        //choice: chỉ số phần tử catalog đc chọn
-        int choice = Integer.parseInt(scanner.nextLine());
-        //lay ten danh muc trong phan tu doi tuong Categories
-        this.categories = arrCategories[choice - 1];  // categories là catalogId
+        do{
+           //choice: chỉ số phần tử catalog đc chọn
+            int choice = Integer.parseInt(scanner.nextLine());
+            if(choice>=1 && choice<=curentCategories){
+                //lay ten danh muc trong phan tu doi tuong Categories
+                this.categories = arrCategories[choice - 1];  // categories là catalogId
+                break;
+            }
+            System.out.println("Mã IdCategories sai, vui lòng nhập lại!");
 
-        System.out.println("Nhập vào trạng thái");
+        }while (true);
+
+        System.out.println("Nhập vào trạng thái (0: Đang bán – 1: Hết hàng – 2: Không bán)");
         do {
 
             int status = Integer.parseInt(scanner.nextLine());
@@ -225,7 +235,8 @@ public class Product {
 
     public void dispalyDataProduct() {
         System.out.printf("Mã đồ uống: %s\nTên đồ uống: %s\nGiá sản phẩm: %f\n", this.productid, this.productName, this.price);
-        System.out.printf("Mô tả sản phẩm: %s\nNgày nhập sản phẩm: %tF\nMã danh mục mà sản phẩm: %d\n", this.description, this.created, this.categories.getCatalogId());
+        System.out.printf("Mô tả sản phẩm: %s\nNgày nhập sản phẩm: %tF\nTên danh mục của sản phẩm: %s\n", this.description, this.created, this.categories.getCatalogName());
         displayProductStatus(); // Gọi phương thức displayProductStatus() ở đây
+        System.out.println("---------------------------------------");
     }
 }
