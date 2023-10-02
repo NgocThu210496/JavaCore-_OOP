@@ -114,7 +114,8 @@ public class Categories {
     }
 
     public void displayDataCatalog() {
-        System.out.printf("CatalogId: %d\nTen danh muc: %s\nMô tả danh mục: %s\nStatus: %s\n", this.catalogId, this.catalogName, this.descriptions, this.catalogStatus ? "Hoạt động" : "Không hoạt động");
+        System.out.printf("CatalogId: %d - Ten danh muc: %s\n", this.catalogId, this.catalogName);
+        System.out.printf("Mô tả danh mục: %s - Status: %s\n",this.descriptions, this.catalogStatus ? "Hoạt động" : "Không hoạt động");
         System.out.println("--------------------------------------");
     }
 

@@ -154,6 +154,10 @@ public class ShopManagement {
         }
         System.out.println("Đã Xoá xong");
     }
+    public static void checkContainsProducts(){
+        boolean containsProducts = false;
+
+    }
 
     public static void updateStatusCategories() {
         System.out.println("Nhập mã danh mục cần cập nhật trạng thái: ");

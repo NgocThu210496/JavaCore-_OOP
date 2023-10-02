@@ -234,8 +234,8 @@ public class Product {
     }
 
     public void dispalyDataProduct() {
-        System.out.printf("Mã đồ uống: %s\nTên đồ uống: %s\nGiá sản phẩm: %f\n", this.productid, this.productName, this.price);
-        System.out.printf("Mô tả sản phẩm: %s\nNgày nhập sản phẩm: %tF\nTên danh mục của sản phẩm: %s\n", this.description, this.created, this.categories.getCatalogName());
+        System.out.printf("Mã đồ uống: %s - Tên đồ uống: %s - Giá sản phẩm: %f\n", this.productid, this.productName, this.price);
+        System.out.printf("Mô tả sản phẩm: %s - Ngày nhập sản phẩm: %tF - Tên danh mục của sản phẩm: %s\n", this.description, this.created, this.categories.getCatalogName());
         displayProductStatus(); // Gọi phương thức displayProductStatus() ở đây
         System.out.println("---------------------------------------");
     }
